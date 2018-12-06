@@ -1,3 +1,6 @@
+/* eslint-disable import/first */
+require('dotenv').config();
+
 import Vue from 'vue';
 import VueLocalStorage from 'vue-localstorage';
 import './plugins/vuetify';

@@ -9,6 +9,9 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "dotenv": "^6.2.0",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.10",
     "register-service-worker": "^1.5.2",
     "vue": "^2.5.17",
     "vue-localstorage": "^0.6.2",

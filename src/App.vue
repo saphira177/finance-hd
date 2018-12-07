@@ -16,18 +16,19 @@
     </v-toolbar>
 
     <v-content>
-      <HelloWorld/>
+      <v-container fluid>
+        <v-fade-transition mode="out-in">
+          <router-view></router-view>
+        </v-fade-transition>
+      </v-container>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-
 export default {
   name: 'App',
   components: {
-    HelloWorld,
   },
   data() {
     return {

@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode';
+import { loginWithToken } from '@/utils/apis';
+
 export default {
   name: 'App',
   components: {
@@ -34,6 +37,20 @@ export default {
     return {
       //
     };
+  },
+  async beforeCreate() {
+    const jwtToken = this.$localStorage.get('jwt');
+    try {
+      const { status } = await loginWithToken(jwtToken);
+      if (status === 201) {
+        this.$localStorage.set('user', jwtDecode(jwtToken).userId);
+      } else {
+        this.$localStorage.remove('user');
+      }
+    } catch (error) {
+      console.log('error', error);
+      this.$localStorage.remove('user');
+    }
   },
 };
 </script>

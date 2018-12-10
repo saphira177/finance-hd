@@ -20,7 +20,7 @@
                     v-model="password"
                     min="8"
                     :append-icon="e1 ? 'visibility' : 'visibility_off'"
-                    :append-icon-cb="() => (e1 = !e1)"
+                    @click:append="() => (e1 = !e1)"
                     :type="e1 ? 'password' : 'text'"
                     :rules="passwordRules"
                     counter
@@ -68,6 +68,9 @@
 </style>
 
 <script>
+import jwtDecode from 'jwt-decode';
+import { login } from '@/utils/apis';
+
 export default {
   data: () => ({
     valid: false,
@@ -83,9 +86,17 @@ export default {
     ],
   }),
   methods: {
-    submit() {
+    async submit() {
       if (this.$refs.form.validate()) {
-        this.$refs.form.$el.submit();
+        try {
+          const response = await login(this.email, this.password);
+          const { data: { accessToken } } = response;
+          this.$localStorage.set('jwt', accessToken);
+          this.$localStorage.set('user', jwtDecode(accessToken).userId);
+          this.$router.push('/');
+        } catch (error) {
+          console.log('error', error);
+        }
       }
     },
     clear() {

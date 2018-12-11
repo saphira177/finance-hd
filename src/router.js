@@ -29,10 +29,19 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log('hello from:', from.path);
-  console.log('hello to:', to.path);
-  console.log('localStorage', Vue.localStorage);
-  next();
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = Vue.localStorage.get('user');
+
+  if (to.path === '/login' && loggedIn) {
+    return next('');
+  }
+
+  if (authRequired && !loggedIn) {
+    return next('/login');
+  }
+
+  return next();
 });
 
 export default router;

@@ -68,7 +68,6 @@
 </style>
 
 <script>
-import jwtDecode from 'jwt-decode';
 import { login } from '@/utils/apis';
 
 export default {
@@ -89,10 +88,9 @@ export default {
     async submit() {
       if (this.$refs.form.validate()) {
         try {
-          const response = await login(this.email, this.password);
-          const { data: { accessToken } } = response;
+          const { data: { accessToken, user } } = await login(this.email, this.password);
           this.$localStorage.set('jwt', accessToken);
-          this.$localStorage.set('user', jwtDecode(accessToken).userId);
+          this.$store.dispatch('saveUser', user);
           this.$router.push('/');
         } catch (error) {
           console.log('error', error);

@@ -7,7 +7,7 @@ parameters:
     - working_directory: &working_directory ~/finance-hd
     - usr_local_directory: &usr_local_directory /usr/local
   cache-keys:
-    - node_modules: &node_modules npm-cache-{{ checksum "yarn-lock.json" }}
+    - node_modules: &node_modules npm-cache-{{ checksum "yarn.lock" }}
 
 jobs:
   # Prepare node_modules

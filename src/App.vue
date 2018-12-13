@@ -38,17 +38,23 @@ export default {
     };
   },
   async beforeCreate() {
+    console.log('App beforeCreate');
     const jwtToken = this.$localStorage.get('jwt');
-    try {
-      const { status, data: { user } } = await loginWithToken(jwtToken);
-      if (status === 201) {
-        this.$store.dispatch('saveUser', user);
-      } else {
+    if (jwtToken) {
+      try {
+        const { status, data: { user } } = await loginWithToken(jwtToken);
+        if (status === 201) {
+          this.$store.dispatch('saveUser', user);
+        } else {
+          this.$store.dispatch('removeUser');
+          this.$localStorage.remove('jwt');
+          this.$router.push('/login');
+        }
+      } catch (error) {
         this.$store.dispatch('removeUser');
+        this.$localStorage.remove('jwt');
+        this.$router.push('/login');
       }
-    } catch (error) {
-      console.log('error in loginWithToken', error);
-      this.$store.dispatch('removeUser');
     }
   },
 };

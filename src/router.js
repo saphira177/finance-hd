@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from './store';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 
@@ -32,10 +31,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const publicPages = ['/login'];
   const authRequired = !publicPages.includes(to.path);
-  const loggedIn = store.state.users.user !== undefined;
+  const jwt = Vue.localStorage.get('jwt');
+  const loggedIn = jwt !== undefined && jwt !== null;
 
   if (to.path === '/login' && loggedIn) {
-    return next('');
+    return next('/');
   }
 
   if (authRequired && !loggedIn) {
